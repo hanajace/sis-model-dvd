@@ -1,0 +1,29 @@
+version: '2.1'
+services:
+
+  web:
+    build:
+      context: ""
+      dockerfile: Dockerfile
+      args:
+        hostUID: 1000
+        hostGID: 1000
+    image: sis-school-service-web
+    hostname: sis-school-service-web
+    container_name: sis-school-service-web
+    extra_hosts:
+      # Need for Xdebug and some callback to local
+      - "host.docker.internal:host-gateway"
+    labels:
+      SERVICE_NAME: sis-school-service-web
+      SERVICE_80_NAME: sis-school-service-web
+      SERVICE_443_NAME: sis-school-service-web
+    ports:
+     - '8080:80'
+    environment:
+      APP_ENV: local
+      PHP_IDE_CONFIG: serverName=sis-school-service-web.service.docker
+    volumes:
+      - ../../:/home/www/app
+      # Override xdebug.ini in docker instance
+      #- ./customize/usr/local/etc/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
